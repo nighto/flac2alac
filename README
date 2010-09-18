@@ -1,0 +1,26 @@
+flac2alac by Arlindo "Nighto" Pereira
+First posted on http://nighto.net/convertendo-flac-para-alac/
+(C) 2010
+Licensed on GPLv3
+
+
+
+flac2alac is a shell script to convert FLAC (Free Lossless Audio Codec) files to ALAC (Apple Lossless Audio Codec) format, used on iPod/iPhone/iPad.
+
+You can use it to convert a single .flac file to .m4a, like
+
+ flac2alac file.flac
+
+flac2alac takes only one flac file as parameter (i.e. converts only one file per time). You can, however, convert all files in a given directory using a bash loop:
+
+ for i in *flac ; do flac2alac "$i" ; done
+
+A easy way to install on Linux is making it executable and copying it to a directory in your path, like
+
+ chmod +x flac2alac && sudo cp flac2alac /usr/local/bin
+
+flac2m4a uses flac and ffmpeg to decode/encode the audio files. On Ubuntu, you can install them with
+
+ sudo apt-get install flac ffmpeg
+
+Enjoy.
