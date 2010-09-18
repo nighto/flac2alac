@@ -4,7 +4,7 @@ echo ""
 echo "flac2alac - script to convert FLAC audio to ALAC"
 echo "By Arlindo \"Nighto\" Pereira"
 echo "<nighto@nighto.net>"
-echo "(C) 2008-2010. Licensed on GPLv3"
+echo "(C) 2010. Licensed on GPLv3"
 echo ""
 
 if [ "$1" ]
