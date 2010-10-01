@@ -5,10 +5,16 @@
 
 # modified by jeffrey paul <sneak@datavibe.net>
 
+# inspiration from http://ca.ubuntuforums.org/member.php?u=6176 (MetalMusicAddict)
+# script at http://ca.ubuntuforums.org/showthread.php?t=889700&page=2
+
 # this requires ImageMagick (for convert), mpeg4ip (for mp4tags),
 # recent flac (for metaflac with --export-picture-to), and
 # ffmpeg with alac (apple lossless) and flac support built in
 
+# no longer requires 'convert' as through testing i've found that
+# mp4tags does not require a png cover file as the manpage says
+# also iTunes 10.x will accept either embedded png or jpeg in an alac m4a
 
 function _convert_flac2alac {
 	NF="`basename \"$1\" .flac`.m4a"
