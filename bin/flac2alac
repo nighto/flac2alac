@@ -79,6 +79,13 @@ function _convert_flac2alac {
 		rm -f "${D}/${ARTFILE}"	
 	fi
 
+
+	flac -dc "$1" > "${D}/.flacdecode.${NF}.wav"
+	ffmpeg -i "${D}/.tmp.${NF}" "${D}/.alacdecode.${NF}.wav"
+	ORIG="`md5sum \"${D}/.flacdecode.${NF}.wav\" | awk '{print $1}'`"	
+	NEW="`md5sum \"${D}/.alacdecode.${NF}.wav\" | awk '{print $1}'`"	
+	echo "OLD SUM IS $ORIG"
+	echo "NEW SUM IS $NEW"
 	mv "${D}/.tmp.${NF}" "${D}/${NF}"
 }
 
