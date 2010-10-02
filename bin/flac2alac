@@ -96,8 +96,12 @@ function _convert_flac2alac {
 		exit 1
 	else
 		mv "${D}/.tmp.${NF}" "${D}/${NF}"
+		OLDSIZE="`du -sb \"$1\" | awk '{print $1}'`" 	
+		NEWSIZE="`du -sb \"${D}/${NF}\" | awk '{print $1}'`" 	
+		PCT=$(( ( $OLDSIZE / $NEWSIZE ) * 100 ))	
 		echo "Successfully converted:"
 		echo "$1 -> ${D}/$NF"
+		echo "STATS: ALAC is ${PCT}% the size of the input FLAC" 
 		exit 0
 	fi
 }
