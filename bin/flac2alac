@@ -116,7 +116,7 @@ function _convert_flac2alac {
 	fi
 }
 
-if [ ! -f "$1" ]; then
+if [ $# -lt 1 ]; then
 	echo "usage: $0 [-d] <file.flac> [file2.flac] [...]" > /dev/stderr
 	exit 1
 fi
@@ -127,6 +127,8 @@ for filename in "$@"; do
 	if [ "$filename" = "-d" ]; then
 		DELETE_WHEN_DONE=1
 	fi
-	_convert_flac2alac "$filename"
+	if [ -f "$filename" ]; then
+		_convert_flac2alac "$filename"
+	fi
 done
 
