@@ -17,14 +17,17 @@
 # also iTunes 10.x will accept either embedded png or jpeg in an alac m4a
 
 function _convert_flac2alac {
-	flac -t "$1"
+	
+	NF="`basename \"$1\" .flac`.m4a"
+	D="`dirname \"$1\"`"
+
+	flac -dc "$1" > "${D}/.flacdecode.${NF}.wav"
 
 	if [ $? -ne 0 ]; then
+		rm -f "${D}/.flacdecode.${NF}.wav"
 		echo "ERROR: corrupt or invalid flac file, exiting." > /dev/stderr
 		exit 1
 	fi
-	NF="`basename \"$1\" .flac`.m4a"
-	D="`dirname \"$1\"`"
 
 	ARTIST="`metaflac --show-tag=ARTIST \"$1\" | sed s/ARTIST=//g`"
 	ALBUMARTIST="`metaflac --show-tag=ALBUMARTIST \"$1\" | sed s/ALBUMARTIST=//g`"
@@ -55,6 +58,7 @@ function _convert_flac2alac {
 
 	if [ $? -ne 0 ]; then
 		echo "Problem running conversion, exiting." > /dev/stderr
+		rm -f "${D}/.flacdecode.${NF}.wav"
 		rm -f "${D}/.tmp.${NF}" "${D}/${ARTFILE}"
 		exit 1
 	fi
@@ -80,13 +84,21 @@ function _convert_flac2alac {
 	fi
 
 
-	flac -dc "$1" > "${D}/.flacdecode.${NF}.wav"
 	ffmpeg -i "${D}/.tmp.${NF}" "${D}/.alacdecode.${NF}.wav"
 	ORIG="`md5sum \"${D}/.flacdecode.${NF}.wav\" | awk '{print $1}'`"	
 	NEW="`md5sum \"${D}/.alacdecode.${NF}.wav\" | awk '{print $1}'`"	
-	echo "OLD SUM IS $ORIG"
-	echo "NEW SUM IS $NEW"
-	mv "${D}/.tmp.${NF}" "${D}/${NF}"
+	if [ "$ORIG" != "$NEW" ]; then
+		echo "ERROR: Newly converted ALAC is not identical!" > /dev/stderr
+		echo "Aborting!" > /dev/stderr
+		rm -f "${D}/.tmp.${NF}" "${D}/.alacdecode.${NF}.wav"
+		rm -f "${D}/.flacdecode.${NF}.wav"
+		exit 1
+	else
+		mv "${D}/.tmp.${NF}" "${D}/${NF}"
+		echo "Successfully converted:"
+		echo "$1 -> $NF"
+		exit 0
+	fi
 }
 
 if [ ! -f "$1" ]; then
