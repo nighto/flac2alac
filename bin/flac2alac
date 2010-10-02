@@ -85,6 +85,13 @@ function _convert_flac2alac {
 
 
 	ffmpeg -i "${D}/.tmp.${NF}" "${D}/.alacdecode.${NF}.wav"
+	if [ $? -ne 0 ]; then
+		rm -f "${D}/.flacdecode.${NF}.wav"
+		rm -f "${D}/.alacdecode.${NF}.wav"
+		rm -f "${D}/${NF}"
+		echo "ERROR: unable to decode new ALAC, exiting." > /dev/stderr
+		exit 1
+	fi
 	ORIG="`md5sum \"${D}/.flacdecode.${NF}.wav\" | awk '{print $1}'`"	
 	NEW="`md5sum \"${D}/.alacdecode.${NF}.wav\" | awk '{print $1}'`"	
 	rm -f "${D}/.alacdecode.${NF}.wav"
@@ -98,7 +105,7 @@ function _convert_flac2alac {
 		mv "${D}/.tmp.${NF}" "${D}/${NF}"
 		OLDSIZE="`du -sb \"$1\" | awk '{print $1}'`" 	
 		NEWSIZE="`du -sb \"${D}/${NF}\" | awk '{print $1}'`" 	
-		PCT=$(( ( $OLDSIZE / $NEWSIZE ) * 100 ))	
+		PCT=$(( $OLDSIZE * 100 / $NEWSIZE ))
 		echo "Successfully converted:"
 		echo "$1 -> ${D}/$NF"
 		echo "STATS: ALAC is ${PCT}% the size of the input FLAC" 
