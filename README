@@ -19,8 +19,17 @@ You can use it to remove the original files after successful conversion:
 
 Users of this program may find the "ppss" (parallel processing shell script) tool useful for converting large batches of files on modern, multi-core machines.
 
-  http://code.google.com/p/ppss/
+  Download at:  http://code.google.com/p/ppss/
 
+To convert an entire directory using all of your available cores:
+
+  ppss -d . -c 'flac2alac '
+
+Or, to delete after:
+
+  ppss -d . -c 'flac2alac -d '
+
+(One note: ppss by default recurses through all of the subdirectories of the directory specified by the '-d' option.  More info can be found in the ppss docs.)
 
 flac2alac uses flac and ffmpeg to decode/encode the audio files. On Ubuntu, you can install them with
 
