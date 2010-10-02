@@ -17,6 +17,12 @@
 # also iTunes 10.x will accept either embedded png or jpeg in an alac m4a
 
 function _convert_flac2alac {
+	flac -t "$1"
+
+	if [ $? -ne 0 ]; then
+		echo "ERROR: corrupt or invalid flac file, exiting." > /dev/stderr
+		exit 1
+	fi
 	NF="`basename \"$1\" .flac`.m4a"
 	D="`dirname \"$1\"`"
 
