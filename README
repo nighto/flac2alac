@@ -1,26 +1,44 @@
-flac2alac by Arlindo "Nighto" Pereira
+flac2alac by Arlindo "Nighto" Pereira (C) 2010
 First posted on http://nighto.net/convertendo-flac-para-alac/
-(C) 2010
 Licensed on GPLv3
-
-
+also modified by Jeffrey Paul <sneak@datavibe.net>
 
 flac2alac is a shell script to convert FLAC (Free Lossless Audio Codec) files to ALAC (Apple Lossless Audio Codec) format, used on iPod/iPhone/iPad.
 
 You can use it to convert a single .flac file to .m4a, like
 
- flac2alac file.flac
+  flac2alac file.flac
 
-flac2alac takes only one flac file as parameter (i.e. converts only one file per time). You can, however, convert all files in a given directory using a bash loop:
+You can use it to convert a directory of files:
+ 
+  flac2alac *.flac
 
- for i in *flac ; do flac2alac "$i" ; done
+You can use it to remove the original files after successful conversion:
 
-A easy way to install on Linux is making it executable and copying it to a directory in your path, like
+  flac2alac -d *.flac
 
- chmod +x flac2alac && sudo cp flac2alac /usr/local/bin
+Users of this program may find the "ppss" (parallel processing shell script) tool useful for converting large batches of files on modern, multi-core machines.
 
-flac2m4a uses flac and ffmpeg to decode/encode the audio files. On Ubuntu, you can install them with
+  Download at:  http://code.google.com/p/ppss/
+
+To convert an entire directory using all of your available cores:
+
+  ppss -d . -c 'flac2alac '
+
+Or, to delete after:
+
+  ppss -d . -c 'flac2alac -d '
+
+(One note: ppss by default recurses through all of the subdirectories of the directory specified by the '-d' option.  More info can be found in the ppss docs.)
+
+flac2alac uses flac and ffmpeg to decode/encode the audio files. On Ubuntu, you can install them with
 
  sudo apt-get install flac ffmpeg
 
-Enjoy.
+Also required is the mpeg4ip package that includes the mp4tags utility, fetch it from here:
+
+ cvs -d:pserver:anonymous@mpeg4ip.cvs.sourceforge.net:/cvsroot/mpeg4ip login 
+ cvs -d:pserver:anonymous@mpeg4ip.cvs.sourceforge.net:/cvsroot/mpeg4ip co -P mpeg4ip
+
+(their URL is http://mpeg4ip.sourceforge.net/downloads/index.php but they appear to have removed all tarball downloads.)
+
