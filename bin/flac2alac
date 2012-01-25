@@ -41,7 +41,7 @@ function _convert_flac2alac {
 	DISCTOTAL="`metaflac --show-tag=DISCTOTAL \"$1\" | sed s/DISCTOTAL=//ig`"
 	DESCRIPTION="`metaflac --show-tag=DESCRIPTION \"$1\" | sed s/DESCRIPTION=//ig`"
 	COMPOSER="`metaflac --show-tag=COMPOSER \"$1\" | sed s/COMPOSER=//ig`"
-	ARTFORMAT="`metaflac --export-picture-to=- \"$1\" | file -i -b -`"
+	ARTFORMAT="`metaflac --export-picture-to=- \"$1\" | file -i -b - | awk '{split(\$1,arr,\";\"); print arr[1]}'`"
 	ARTFILE=".arttmp.${NF}"
 
 	if [ "$ARTFORMAT" != "application/x-empty" ]; then
